@@ -60,7 +60,14 @@ app.put('/api/notes/:id',  (req, res) => {
 
 app.delete('/api/notes/:id',(req, res) => {
     let {id} = req.params;
-    db.deleteNote(res, id);
+    if(id === 'null') {
+        res.status(500).json({
+            status: 500,
+            message: "Id no puede ser nulo",
+        })
+    } else {
+        db.deleteNote(res, id);
+    }
 })
 
 exports.app = app;

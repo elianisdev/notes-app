@@ -10,7 +10,7 @@
     </v-app-bar>
     <v-layout row wrap justify-center align-start>
     <v-card v-for="(note, index) in notes" :key="index">
-      <v-card-text v-if="note.state===true">
+      <v-card-text>
     <h3>{{note.title}}</h3>
     <p>{{note.content}}</p>
     <v-btn :color="note.state === true ? 'success' : 'error'"  depressed outlined small>
@@ -21,7 +21,7 @@
         <v-btn class="ml-2" color="indigo" fab small @click="noteToEdit(index)">
           <v-icon color="white">mdi-square-edit-outline</v-icon>
         </v-btn>
-        <v-btn class="ml-2" color="red darken-4" fab small @click="deleteNoteAsk = true" noteId=" note._id" >
+        <v-btn class="ml-2" color="red darken-4" fab small @click="deleteNoteAsk = true; noteId= note._id">
           <v-icon color="white">mdi-delete</v-icon>
         </v-btn>
   </v-card-text>
@@ -77,14 +77,13 @@ export default {
       dialog: false,
       deleteNoteAsk: false,
       newNote: false,
-      noteId: true,
+      noteId: null,
       noteEdit: {},
       noteToCreate: {}
     }
   },
   mounted() {
     this.user = JSON.parse(localStorage.getItem('user'))
-    console.log('este es el usuario yqe voy a usar ', this.user)
     this.getNotesByUser();
   },
   methods: {
@@ -115,6 +114,7 @@ export default {
       this.dialog = false
     },
     deleteNote() {
+      console.log(this.noteId)
       let id = this.noteId;
       axios.delete(`http://localhost:3000/api/notes/${id}`)
           .then((res) => {
